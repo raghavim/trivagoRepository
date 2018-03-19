@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<Browser Key="Transactions">
+	<Page Key="SignIn">
+		<WebElement Key="UserName" id="username"/>
+		<WebElement Key="Password" id="password"/>
+		<WebElement Key="SignIn_button" id="submit"/>
+	</Page>
+	<Page Key="Index">
+		<WebElement Key="Categories_button" xpath="//*[@title='To classify the category of each item.']"/>
+	</Page>
+	<Page Key="Categories">
+		<WebElement Key="AddNew_button" id="addNew"/>
+		<WebElement Key="Category_textbox" id="category"/>
+		<WebElement Key="SaveNew_button" id="insert"/>
+		<WebElement Key="AdminArea_button" xpath="//a[contains(text(),' Admin Area')][1]"/>
+	</Page>
+	<Page Key="MemberShip">
+		<WebElement Key="NewestUpdates_button" xpath="//h3[contains(text(),'Newest Updates ')]/a[@class='btn btn-default btn-sm']"/>
+		<WebElement Key="Delete_button" xpath="//img[@src='images/delete_icon.gif'][1]" />
+		<WebElement Key="SignOut_button" xpath=" //a[@href='pageHome.php?signOut=1']"/>
+	</Page>
+</Browser>
+</root>

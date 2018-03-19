@@ -1,0 +1,57 @@
+manifest:
+  application:
+    name: CloudFoundryBasicDemo_AutoQA
+    description: CloudFoundryBasicDemo
+    team: Team responsible for this application
+    change_management: 
+      type: JIRA    
+      name: pk-jira    
+      project_key: PSD    
+      approval_type: BASIC_APPROVAL
+    scm: 
+      type: Gitlab
+      name: QA GIT
+      cred_id: 26014226-38e9-4876-a3d2-02159dfcd00c
+      token_id: 874530c5-5b2a-47d6-aea9-ed6a34dfa942
+      url: https://edpqa-gitlab.prokarmalabs.com/edp/CloudFoundryBasicDemo.git
+    notification:
+    - type: Slack
+      name: pk-denver-devopssummit
+      webhookUrl: https://hooks.slack.com/services/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
+      channels: ['ede-qa']
+      level: ['info' ,'success' ,'failure' ,'info' ]
+  build:
+  - type: Shell
+    name: Building Maven Application
+    command: mvn clean install -Dmaven.test.skip && chmod +x docker_check_rm.sh && ./docker_check_rm.sh edp-cloud-foundry edpqa-product.prokarmalabs.com && docker -H tcp://edpqa-product.prokarmalabs.com:2375 build -t edp-cloud-foundry . && docker -H tcp://edpqa-product.prokarmalabs.com:2375 tag edp-cloud-foundry:latest edpqa-nexus.prokarmalabs.com/edp-cloud-foundry:latest
+    order: 1
+  code_quality:
+  - type: Shell
+    name: Testing Code
+    command: mvn clean test
+    order: 1
+  artifact:
+  - type: Shell
+    name: Deploying Artifacts to Nexus
+    url: https://edpqa-nexus.prokarmalabs.com
+    command: mvn clean deploy -Dmaven.test.skip=true && docker -H tcp://edpqa-product.prokarmalabs.com:2375 login -u admin -p pknxadmin@123 edpqa-nexus.prokarmalabs.com && docker -H tcp://edpqa-product.prokarmalabs.com:2375 push edpqa-nexus.prokarmalabs.com/edp-cloud-foundry:latest
+    order: 1
+  test_suite:
+  - type: Selenium
+    name: Integration Test Dev
+    command: sleep 60 && java -jar test-suite/target/edp-tep-test-suite-0.0.1-jar-with-dependencies.jar dev http://edpdev-product.prokarmalabs.com:9900 ${JOB_NAME} ${BUILD_NUMBER}
+    scm_folder: integration_test/
+  environment: 
+    dev:
+    - name: Step Name
+      type: Shell
+      command: docker -H tcp://edpqa-product.prokarmalabs.com:2375 login -u admin -p pknxadmin@123 edpqa-nexus.prokarmalabs.com && docker -H tcp://edpqa-product.prokarmalabs.com:2375 service create --limit-memory 512m --with-registry-auth --name edp-cloud-foundry --publish 9900:8080 edpqa-nexus.prokarmalabs.com/edp-cloud-foundry:latest
+      deploy_url: http://edpqa-product.prokarmalabs.com:9900
+      rollback_command: rollback.sh
+  report:
+  - type: Jenkins-PublishHTMLReport
+    name: test_suite
+    html_directory_to_archive: test-output
+    index_pages: ${ENVIRONMENT_NAME}-${JOB_NAME}-${BUILD_NUMBER}-emailable-report.html
+    report_title: Test_Suite_Report
+    order: 1

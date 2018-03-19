@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="-1" guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
+  <test name="TrivagoTest(failed)">
+    <classes>
+      <class name="mytest.Login">
+        <methods>
+          <include name="launchBrowser"/>
+          <include name="login"/>
+          <include name="terminateBrowser"/>
+          <include name="verifyHomepageTitle"/>
+          <include name="goBackToHomepage"/>
+        </methods>
+      </class> <!-- mytest.Login -->
+    </classes>
+  </test> <!-- TrivagoTest(failed) -->
+</suite> <!-- Failed suite [Suite] -->

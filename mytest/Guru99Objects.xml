@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<Browser Key="Home">
+		<Page Key="Register">
+			<WebElement Key="Register_link" xpath="//a[contains(text(),'REGISTER')]" />
+			<WebElement Key="Email_confirmPassword" xpath="//*[@name='confirmPassword']" />
+			<WebElement Key="Submit_Button" xpath="//*[@name='submit']" />
+			<WebElement Key="SignInLink" xpath="//a[contains(text(),'sign-in')]" />
+			<WebElement key="Email_username" xpath="//*[@id='email']" />
+			<WebElement Key="Email_password" xpath="//*[@type='password']" />
+		</Page>
+		<Page Key="SignIn">
+			<WebElement Key="UserName" xpath="//*[@name='userName']" />
+			<WebElement Key="Password" xpath="//*[@type='password']" />
+			<WebElement Key="SignIn_button" xpath="//*[@name='submit']" />
+		</Page>
+		<Page Key="LoggedIn">
+			<WebElement Key="LogInCheck"
+				xpath="/html/body/div/table/tbody/tr/td[2]/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[3]/td/p[1]/font/b"></WebElement>
+		</Page>
+	</Browser>
+</root>
+
