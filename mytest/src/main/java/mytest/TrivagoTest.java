@@ -26,6 +26,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class TrivagoTest {
@@ -34,9 +36,9 @@ public class TrivagoTest {
 	
 	@BeforeTest
 	public void launchBrowser() {
-//		ChromeOptions o = new ChromeOptions();
-//		o.addArguments("disable-extensions");
-//		o.addArguments("--start-maximized");
+		ChromeOptions o = new ChromeOptions();
+		o.addArguments("disable-extensions");
+		o.addArguments("--start-maximized");
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\mraghavi\\Desktop\\softwares\\chromedriver_win32\\chromedriver.exe");
 		 driver= new ChromeDriver();
 		driver.get("https://www.trivago.in/");
@@ -60,11 +62,13 @@ public class TrivagoTest {
 //	}
 	
 	@Test
-	public void trivagoTestMethod() throws InterruptedException {
+	 @Parameters({"resort","sortBy"})
+	public void trivagoTestMethod(@Optional String resort, String sortBy) throws InterruptedException {
 	
 	//public static void main(String[] args) throws InterruptedException {
 	
-
+		System.out.println("resort name is" + resort);
+		System.out.println("sortby select value is" + sortBy);
 		
 		// TODO Auto-generated method stub
 		
@@ -75,11 +79,22 @@ public class TrivagoTest {
 		driver.findElement(By.xpath("//*[@id='js-fullscreen-hero']/div/form/div/div[1]/div/div/div[2]/button/span/span")).click();
 		wait.withTimeout(60, TimeUnit.SECONDS);
 		
+//		
+//		Thread.sleep(10000);
+//		WebElement price= driver.findElement(By.xpath("//*[@id='js-fullscreen-hero']//*[contains(text(),'Price')]"));
+//		if((wait .ignoring(NoSuchElementException.class).until(ExpectedConditions.visibilityOfElementLocated((By) price))) != null){
+//			driver.findElement(By.xpath("//*[@id='js-fullscreen-hero']//*[contains(text(),'Price')]")).click();
+//			driver.findElement(By.xpath("//*[@id='js-fullscreen-hero']/div/form/section/div[2]/div[1]/div/div/div[1]/p[2]")).click();
+//			
+//		}
+//		else{
+//			driver.findElement(By.xpath("//*[@class='fl-slider__label fl-slider__label--cur']")).click();
+//			wait.withTimeout(10, TimeUnit.SECONDS).until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//*[@class='tag tag--secondary js-refinement-row-tag taglist__item--id-price']"))));	
+//		}
 		
-		Thread.sleep(10000);
-		driver.findElement(By.xpath("//*[@class='fl-slider__label fl-slider__label--cur']")).click();
-		Thread.sleep(1000);
-		driver.findElement(By.id("max-price")).sendKeys("16000");
+		
+//		Thread.sleep(1000);
+//		driver.findElement(By.id("max-price")).sendKeys("16000");
 		
 		/*if(driver.findElement(By.xpath("//*[@id='js-fullscreen-hero']/div/form/div[2]/div[1]/button")).isDisplayed())
 			driver.findElement(By.xpath("//*[@id='js-fullscreen-hero']/div/form/div[2]/div[1]/button")).click();
@@ -127,7 +142,7 @@ public class TrivagoTest {
 		boolean mariottCheckFlag=false;
 		do{
 			
-		wait.withTimeout(60, TimeUnit.SECONDS);
+		wait.withTimeout(60, TimeUnit.SECONDS).ignoring(NoSuchElementException.class).until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[@class='item__details']")));
 		List<WebElement> searchResultsOnPage = driver.findElements(By.xpath("//*[@class='item__details']"));
 		System.out.println(searchResultsOnPage.size());
 		
